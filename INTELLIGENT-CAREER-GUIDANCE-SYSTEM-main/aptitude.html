@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <title>Math, Bio, Physics Quiz</title>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Math, Bio, and Physics Quiz</h1>
+        <form action="" method="post" id="quiz-form">
+            <!-- Example: Math Question -->
+            <div class="question">
+                <p>What is 2 + 2?</p>
+                <label><input type="radio" name="math" value="1"> 3</label>
+                <label><input type="radio" name="math" value="4"> 4</label>
+            </div>
+
+            <!-- Add similar sections for Bio and Physics questions -->
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="result-container" style="display:none;">
+            <h2>Results</h2>
+            <p id="result-text"></p>
+        </div>
+    </div>
+
+    <script>
+        function submitQuiz() {
+            const mathScore = getSelectedOptionValue("math");
+            // Add similar lines for bio and physics scores
+
+            const totalScore = mathScore; // Add bioScore and physicsScore accordingly
+
+            let resultText = "";
+
+            if (totalScore >= 15) {
+                resultText = "Congratulations! You have a strong foundation in Math, Bio, and Physics.";
+            } else {
+                const highestSubject = getHighestSubject(mathScore); // Add bioScore and physicsScore accordingly
+
+                switch (highestSubject) {
+                    case "math":
+                        resultText = "You excel in Math. Consider careers in mathematics, statistics, or engineering.";
+                        break;
+                    // Add cases for bio and physics
+                    default:
+                        resultText = "Error in determining the highest subject.";
+                }
+            }
+
+            document.getElementById("result-text").textContent = resultText;
+            document.getElementById("quiz-form").style.display = "none";
+            document.getElementById("result-container").style.display = "block";
+        }
+
+        function getSelectedOptionValue(subject) {
+            const selectedOption = document.querySelector(`input[name=${subject}]:checked`);
+            return selectedOption ? parseInt(selectedOption.value) : 0;
+        }
+
+        function getHighestSubject(math) {
+            return "math"; // Change this logic to consider bio and physics scores
+        }
+    </script>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Process the form submission and provide PHP logic here
+        // You may want to retrieve and validate the submitted answers
+        // Calculate scores and determine the highest subject
+        // Echo appropriate career recommendations based on the scores
+    }
+    ?>
+</body>
+</html>

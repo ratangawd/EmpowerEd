@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aptitude Test</title>
+</head>
+<body>
+  <h1>Aptitude Test</h1>
+  <form id="aptitudeForm">
+    <!-- Physics Questions -->
+    <fieldset>
+      <legend>Physics</legend>
+      <ol>
+        <li>
+          <label for="phyQ1">Question 1: What is the formula for gravitational force?</label>
+          <input type="text" id="phyQ1" name="phyQ1" required>
+        </li>
+        <!-- Add more physics questions here -->
+      </ol>
+    </fieldset>
+
+    <!-- Maths Questions -->
+    <fieldset>
+      <legend>Maths</legend>
+      <ol>
+        <li>
+          <label for="mathQ1">Question 1: Solve the equation 2x + 5 = 11</label>
+          <input type="text" id="mathQ1" name="mathQ1" required>
+        </li>
+        <!-- Add more maths questions here -->
+      </ol>
+    </fieldset>
+
+    <!-- Computer Science Questions -->
+    <fieldset>
+      <legend>Computer Science</legend>
+      <ol>
+        <li>
+          <label for="csQ1">Question 1: What is the purpose of a constructor in object-oriented programming?</label>
+          <input type="text" id="csQ1" name="csQ1" required>
+        </li>
+        <!-- Add more computer science questions here -->
+      </ol>
+    </fieldset>
+
+    <button type="button" onclick="calculateResults()">Submit</button>
+  </form>
+
+  <div id="resultSection" style="display: none;">
+    <h2>Results</h2>
+    <p>Your ranking:</p>
+    <ol id="rankingList"></ol>
+
+    <button id="careerButton1" onclick="redirectToCareer('Physics')">Careers in Physics</button>
+    <button id="careerButton2" onclick="redirectToCareer('Maths')">Careers in Maths</button>
+    <button id="careerButton3" onclick="redirectToCareer('Computer Science')">Careers in Computer Science</button>
+  </div>
+
+  <script>
+    function calculateResults() {
+      // You need to implement your own scoring and ranking logic here
+      // For simplicity, let's assume each correct answer gives 1 point
+
+      const physicsScore = calculatePhysicsScore();
+      const mathsScore = calculateMathsScore();
+      const csScore = calculateCSScore();
+
+      const ranking = [
+        { subject: 'Physics', score: physicsScore },
+        { subject: 'Maths', score: mathsScore },
+        { subject: 'Computer Science', score: csScore },
+      ];
+
+      ranking.sort((a, b) => b.score - a.score);
+
+      displayResults(ranking);
+    }
+
+    function calculatePhysicsScore() {
+      // Implement your scoring logic for physics questions
+      return 3; // Placeholder score
+    }
+
+    function calculateMathsScore() {
+      // Implement your scoring logic for maths questions
+      return 2; // Placeholder score
+    }
+
+    function calculateCSScore() {
+      // Implement your scoring logic for computer science questions
+      return 4; // Placeholder score
+    }
+
+    function displayResults(ranking) {
+      const resultSection = document.getElementById('resultSection');
+      const rankingList = document.getElementById('rankingList');
+
+      // Display ranking
+      ranking.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${item.subject}: ${item.score} points`;
+        rankingList.appendChild(listItem);
+      });
+
+      resultSection.style.display = 'block';
+    }
+
+    function redirectToCareer(subject) {
+      alert(`Redirecting to Careers in ${subject}`);
+      // You can replace the alert with actual redirection logic to the career page
+      // window.location.href = `careers/${subject}.html`;
+    }
+  </script>
+</body>
+</html>
