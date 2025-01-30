@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 20%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option {
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            transition: background-color 0.2s, color 0.2s;
+            text-align: center;
+            font-size: 18px;
+            color: #007BFF;
+        }
+
+        .option:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .feedback {
+            font-weight: bold;
+            font-size: 18px;
+            color: #007BFF;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .score span {
+            color: #007BFF;
+        }
+
+        #score-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 400px;
+            height: auto;
+        }
+
+        /* Additional style for result buttons */
+        .result-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            transition: background-color 0.2s, color 0.2s;
+            text-align: center;
+            font-size: 18px;
+            color: #007BFF;
+            cursor: pointer;
+        }
+
+        .result-button:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Aptitude Test!</h1>
+        <div id="question-container"></div>
+        <div id="feedback"></div>
+        <div id="score"></div>
+        <canvas id="score-chart" width="400" height="400"></canvas>
+        <div id="result-buttons"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const aptitudeQuestions = [
+          
+            {
+                question: 'Calculate the area of a rectangle with length 8 and width 5.',
+                choices: ['a) 20', 'b) 30', 'c) 40', 'd) 50'],
+                answer: 'c) 40',
+            },
+           
+            {
+                question: 'In a right-angled triangle, if one angle is 90 degrees, what is the measure of the other two angles?',
+                choices: ['a) 45 and 45 degrees', 'b) 30 and 60 degrees', 'c) 60 and 90 degrees', 'd) 90 and 180 degrees'],
+                answer: 'b) 30 and 60 degrees',
+            },
+            {
+                question: 'What is the value of π (pi) to two decimal places?',
+                choices: ['a) 3.14', 'b) 3.16', 'c) 3.18', 'd) 3.20'],
+                answer: 'a) 3.14',
+            },
+            {
+                question: 'Which programming language is known for its use in artificial intelligence?',
+                choices: ['a) Java', 'b) Python', 'c) C++', 'd) Ruby'],
+                answer: 'b) Python',
+            },
+            {
+                question: 'What does HTML stand for in web development?',
+                choices: ['a) HyperText Markup Language', 'b) High-Level Text Language', 'c) HyperTransfer Markup Language', 'd) HomeText Markup Language'],
+                answer: 'a) HyperText Markup Language',
+            },
+           
+            {
+                question: 'Which component of a computer is responsible for performing arithmetic and logical operations?',
+                choices: ['a) CPU', 'b) RAM', 'c) Hard Drive', 'd) GPU'],
+                answer: 'a) CPU',
+            },
+        ];
+
+        let currentQuestionIndex = -1;
+        let userScore = 0;
+
+        function displayResultButtons() {
+            const resultButtonsDiv = document.getElementById('result-buttons');
+
+            const aimlButton = document.createElement('div');
+            aimlButton.classList.add('result-button');
+            aimlButton.textContent = 'Go to Recommended Careers';
+            aimlButton.addEventListener('click', () => redirectToPage('csblog.php'));
+
+            
+
+            resultButtonsDiv.appendChild(aimlButton);
+            
+        }
+
+        function redirectToPage(pageUrl) {
+            window.location.href = pageUrl;
+        }
+
+        function displayNextQuestion() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < aptitudeQuestions.length) {
+                const questionContainer = document.getElementById('question-container');
+                const feedbackDiv = document.getElementById('feedback');
+
+                questionContainer.innerHTML = '';
+
+                const questionData = aptitudeQuestions[currentQuestionIndex];
+
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.textContent = `Question ${currentQuestionIndex + 1}: ${questionData.question}`;
+                questionContainer.appendChild(questionDiv);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('options');
+
+                questionData.choices.forEach((choice) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.classList.add('option');
+                    optionDiv.textContent = choice;
+                    optionDiv.addEventListener('click', () => checkAnswer(choice, questionData.answer, feedbackDiv));
+                    optionsDiv.appendChild(optionDiv);
+                });
+
+                questionContainer.appendChild(optionsDiv);
+            } else {
+                const questionContainer = document.getElementById('question-container');
+                const feedbackDiv = document.getElementById('feedback');
+                const scoreDiv = document.getElementById('score');
+                const chartCanvas = document.getElementById('score-chart');
+                const resultButtonsDiv = document.getElementById('result-buttons');
+
+                questionContainer.innerHTML = '';
+                feedbackDiv.textContent = '';
+                scoreDiv.innerHTML = `Your Score: <span>${userScore} / ${aptitudeQuestions.length}</span>`;
+
+                const data = {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [userScore, aptitudeQuestions.length - userScore],
+                        backgroundColor: ['#2ecc71', '#e74c3c'],
+                    }],
+                };
+
+                const ctx = chartCanvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: data,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    },
+                });
+
+                if (userScore === aptitudeQuestions.length) {
+                    displayResultButtons();
+                }
+            }
+        }
+
+        function checkAnswer(selectedChoice, correctAnswer, feedbackDiv) {
+            if (selectedChoice === correctAnswer) {
+                feedbackDiv.textContent = 'Correct! Well done.';
+                feedbackDiv.style.color = '#2ecc71';
+                userScore++;
+            } else {
+                feedbackDiv.textContent = `Wrong. The correct answer is: ${correctAnswer}`;
+                feedbackDiv.style.color = '#e74c3c';
+            }
+
+            setTimeout(() => {
+                feedbackDiv.textContent = '';
+                feedbackDiv.style.color = '#007BFF';
+                displayNextQuestion();
+            }, 2000);
+        }
+
+        displayNextQuestion();
+    </script>
+</body>
+</html>
